@@ -1,4 +1,4 @@
-/* style.css - Final: Logo, Donasi, Footer, Card Elevation, & Dual Mode (Prompt/JSON) */
+/* style.css - Final: Logo, Donasi, Footer, Card Elevation, Dual Mode, & Input Dinamis */
 * {
   margin: 0;
   padding: 0;
@@ -99,6 +99,21 @@ header p {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* Gaya khusus untuk input dinamis */
+.teks-item,
+.pose-item,
+.ekspresi-item {
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+/* Hilangkan margin bawah di item terakhir */
+.teks-item:last-child,
+.pose-item:last-child,
+.ekspresi-item:last-child {
+  margin-bottom: 0;
+}
+
 .form-group select:focus,
 .form-group input[type="text"]:focus,
 .form-group textarea:focus {
@@ -121,7 +136,7 @@ header p {
 }
 
 .generate-buttons button {
-  width: calc(50% - 4px); /* 50% lebar dikurangi setengah gap */
+  width: calc(50% - 4px);
   padding: 14px;
   font-size: 1rem;
   font-weight: 600;
@@ -244,6 +259,4 @@ footer strong {
     padding: 10px 20px;
     font-size: 1rem;
   }
-
-  /* TIDAK ADA aturan .generate-buttons di sini → tetap horizontal */
 }
