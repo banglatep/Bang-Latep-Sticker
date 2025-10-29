@@ -1,13 +1,13 @@
-// script.js - Dengan dukungan Salin sebagai JSON (key dalam bahasa Inggris)
+// script.js - Mode Dual: Create Prompt & Create JSON
 
 document.addEventListener('DOMContentLoaded', () => {
   const objekModeSelect = document.getElementById('objek-mode');
   const objekCustomInput = document.getElementById('objek-custom');
   const teksStickerInput = document.getElementById('teks-sticker');
   const fontGroup = document.getElementById('font-group');
-  const generateBtn = document.getElementById('generate-btn');
+  const createPromptBtn = document.getElementById('create-prompt-btn');
+  const createJsonBtn = document.getElementById('create-json-btn');
   const copyBtn = document.getElementById('copy-btn');
-  const copyJsonBtn = document.getElementById('copy-json-btn');
   const hasilPrompt = document.getElementById('hasil-prompt');
 
   // Toggle input custom objek
@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Generate prompt
-  generateBtn.addEventListener('click', () => {
+  // Variabel untuk menyimpan mode terakhir
+  let currentMode = 'prompt'; // 'prompt' atau 'json'
+
+  // Fungsi generate prompt (bahasa Indonesia)
+  function generatePrompt() {
     const objekMode = objekModeSelect.value;
     const objekCustom = objekCustomInput.value.trim();
     const pose = document.getElementById('pose').value;
@@ -41,29 +44,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let bagianObjek;
     if (objekMode === 'foto') {
-      bagianObjek = 'Use the face from the attached photo as the main reference.';
+      bagianObjek = 'Gunakan wajah dari foto yang dilampirkan sebagai referensi utama.';
     } else {
       if (!objekCustom) {
         alert('Harap isi deskripsi objek!');
-        return;
+        return null;
       }
       bagianObjek = objekCustom;
     }
 
     let bagianTeks = '';
     if (teks) {
-      bagianTeks = ` Include the text: "${teks}" in ${gayaFont} font style.`;
+      bagianTeks = ` Sertakan teks: "${teks}" dengan gaya font ${gayaFont}.`;
     }
 
-    const prompt = `Create a digital sticker illustration in ${gayaSticker} style of ${bagianObjek}, in a ${pose} pose, with a ${ekspresi} expression.${bagianTeks} Background: ${latar}. Design must be clean, recognizable, and optimized for use as a chat sticker.`;
+    return `Buatkan ilustrasi digital sticker bergaya ${gayaSticker} dari ${bagianObjek}, dalam pose ${pose}, dengan ekspresi ${ekspresi}.${bagianTeks} Latar belakang: ${latar}. Desain harus bersih, mudah dikenali, dan optimal untuk digunakan sebagai sticker di aplikasi chat.`;
+  }
 
-    hasilPrompt.value = prompt;
+  // Fungsi generate JSON (key Inggris, value Indo)
+  function generateJson() {
+    const promptText = generatePrompt();
+    if (!promptText) return null;
+
+    const objekMode = objekModeSelect.value;
+    const objekCustom = objekCustomInput.value.trim();
+    const pose = document.getElementById('pose').value;
+    const ekspresi = document.getElementById('ekspresi').value;
+    const teks = teksStickerInput.value.trim();
+    const gayaFont = document.getElementById('gaya-font').value;
+    const gayaSticker = document.getElementById('gaya-sticker').value;
+    const latar = document.getElementById('latar-belakang').value.trim() || 'transparan';
+
+    return {
+      prompt_type: "sticker",
+      created_by: "BANG LATEP",
+      subject: objekMode === 'foto' 
+        ? 'Gunakan wajah dari foto yang dilampirkan sebagai referensi utama.' 
+        : objekCustom,
+      pose: pose,
+      expression: ekspresi,
+      text: teks || null,
+      font_style: teks ? gayaFont : null,
+      sticker_style: gayaSticker,
+      background: latar,
+      prompt: promptText
+    };
+  }
+
+  // Tombol Create Prompt
+  createPromptBtn.addEventListener('click', () => {
+    currentMode = 'prompt';
+    const prompt = generatePrompt();
+    if (prompt) {
+      hasilPrompt.value = prompt;
+      copyBtn.textContent = 'SALIN PROMPT';
+    }
   });
 
-  // Salin teks biasa
+  // Tombol Create JSON
+  createJsonBtn.addEventListener('click', () => {
+    currentMode = 'json';
+    const json = generateJson();
+    if (json) {
+      hasilPrompt.value = JSON.stringify(json, null, 2);
+      copyBtn.textContent = 'SALIN JSON';
+    }
+  });
+
+  // Tombol Salin (hanya satu)
   copyBtn.addEventListener('click', () => {
     if (!hasilPrompt.value) {
-      alert('Belum ada prompt untuk disalin!');
+      alert('Belum ada hasil untuk disalin!');
       return;
     }
 
@@ -83,79 +134,4 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Gagal menyalin.');
     }
   });
-
-  // Salin sebagai JSON (dalam bahasa Inggris)
-  copyJsonBtn.addEventListener('click', () => {
-    if (!hasilPrompt.value) {
-      alert('Harap buat prompt terlebih dahulu!');
-      return;
-    }
-
-    const objekMode = objekModeSelect.value;
-    const objekCustom = objekCustomInput.value.trim();
-    const pose = document.getElementById('pose').value;
-    const ekspresi = document.getElementById('ekspresi').value;
-    const teks = teksStickerInput.value.trim();
-    const gayaFont = document.getElementById('gaya-font').value;
-    const gayaSticker = document.getElementById('gaya-sticker').value;
-    const latar = document.getElementById('latar-belakang').value.trim() || 'transparan';
-
-    const jsonData = {
-      prompt_type: "sticker",
-      created_by: "BANG LATEP",
-      subject: objekMode === 'foto' 
-        ? 'Use the face from the attached photo as the main reference.' 
-        : objekCustom,
-      pose: pose,
-      expression: ekspresi,
-      text: teks || null,
-      font_style: teks ? gayaFont : null,
-      sticker_style: gayaSticker,
-      background: latar,
-      prompt: hasilPrompt.value
-    };
-
-    const jsonStr = JSON.stringify(jsonData, null, 2);
-
-    // Gunakan Clipboard API modern
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(jsonStr).then(() => {
-        const btn = copyJsonBtn;
-        const originalText = btn.textContent;
-        btn.textContent = 'Tersalin JSON!';
-        setTimeout(() => {
-          btn.textContent = originalText;
-        }, 1500);
-      }).catch(() => {
-        fallbackCopyTextToClipboard(jsonStr, copyJsonBtn);
-      });
-    } else {
-      fallbackCopyTextToClipboard(jsonStr, copyJsonBtn);
-    }
-  });
-
-  // Fallback untuk browser lama
-  function fallbackCopyTextToClipboard(text, button) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    textArea.style.top = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      const success = document.execCommand('copy');
-      if (success) {
-        const originalText = button.textContent;
-        button.textContent = 'Tersalin JSON!';
-        setTimeout(() => {
-          button.textContent = originalText;
-        }, 1500);
-      }
-    } catch (err) {
-      alert('Gagal menyalin JSON. Coba salin manual.');
-    }
-    document.body.removeChild(textArea);
-  }
 });
