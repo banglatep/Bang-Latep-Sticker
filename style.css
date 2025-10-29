@@ -1,4 +1,4 @@
-/* style.css - Final: Logo, Donasi, Footer & Card Elevation Jelas */
+/* style.css - Final: Logo, Donasi, Footer, Card Elevation, & Dukungan JSON */
 * {
   margin: 0;
   padding: 0;
@@ -64,7 +64,7 @@ header p {
 
 /* Card styling - diperjelas */
 .form-group {
-  background-color: #ffffff; /* Putih murni agar shadow terlihat */
+  background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
@@ -112,7 +112,7 @@ header p {
   opacity: 0.8;
 }
 
-/* Tombol utama */
+/* Tombol utama (Generate) */
 button {
   width: 100%;
   padding: 14px;
@@ -134,24 +134,45 @@ button:active {
   transform: translateY(1px);
 }
 
-/* Tombol Salin */
+/* Area Hasil */
 .result-section {
   position: relative;
 }
 
-#copy-btn {
-  width: auto;
-  padding: 8px 20px;
+/* Tombol Salin Ganda */
+.copy-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.copy-buttons button {
+  flex: 1;
+  padding: 10px;
   font-size: 0.95rem;
-  margin-top: 14px;
-  background-color: #967e7c;
-  color: #ffffff;
-  font-weight: 600;
+  border: none;
   border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#copy-btn {
+  background-color: #967e7c;
+  color: white;
 }
 
 #copy-btn:hover {
   background-color: #a89290;
+}
+
+#copy-json-btn {
+  background-color: #102632;
+  color: white;
+}
+
+#copy-json-btn:hover {
+  background-color: #1a3a4d;
 }
 
 /* Tombol Traktir Kopi */
@@ -229,6 +250,11 @@ footer strong {
   button {
     padding: 12px;
     font-size: 1rem;
+  }
+
+  .copy-buttons {
+    flex-direction: column;
+    gap: 8px;
   }
 
   .donate-btn {
