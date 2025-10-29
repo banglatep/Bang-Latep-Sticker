@@ -1,57 +1,119 @@
-// script.js - Dual Mode + Batch Generate + JSON Minimalis
+// script.js - Input Dinamis + Dual Mode + JSON Minimalis
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Elemen UI
   const objekModeSelect = document.getElementById('objek-mode');
   const objekCustomInput = document.getElementById('objek-custom');
-  const teksStickerInput = document.getElementById('teks-sticker');
   const fontGroup = document.getElementById('font-group');
+  const jumlahInput = document.getElementById('jumlah-sticker');
+  const teksContainer = document.getElementById('teks-container');
+  const poseContainer = document.getElementById('pose-container');
+  const ekspresiContainer = document.getElementById('ekspresi-container');
   const createPromptBtn = document.getElementById('create-prompt-btn');
   const createJsonBtn = document.getElementById('create-json-btn');
   const copyBtn = document.getElementById('copy-btn');
   const hasilPrompt = document.getElementById('hasil-prompt');
-  const jumlahInput = document.getElementById('jumlah-sticker');
+
+  // Data opsi
+  const POSE_OPTIONS = [
+    "Angkat Jempol (Thumbs Up)",
+    "Tangan di Dagu (Thinking Pose)",
+    "Namaste / Tangan Menyatu di Dada",
+    "Tangan Silang di Dada",
+    "Tertawa Sambil Pegang Perut",
+    "Membentuk Hati dengan Jari (Finger Heart / Heart Hands)",
+    "Menunjuk ke Depan (Pointing Pose)",
+    "Tangan di Mulut (Kaget / OMG Pose)",
+    "Pamer Otot atau Pose Heroik",
+    "Tangan Terbuka / Shrug Pose"
+  ];
+
+  const EKSPRESI_OPTIONS = [
+    "Tersenyum Lebar / Happy",
+    "Tertawa Sampai Mata Merem / Ngakak",
+    "Mata Berbinar / Love Eyes",
+    "Marah / Cemberut / Ngamuk Lucu",
+    "Sedih / Menangis Dramatik",
+    "Senyum Nakal / Smirk",
+    "Kaget / Shock / Wah!",
+    "Datar / Bete / Deadpan",
+    "Mikir Serius / Mencurigai",
+    "Ekspresi Senang Berlebihan / Party Mood"
+  ];
 
   // Toggle input custom objek
   objekModeSelect.addEventListener('change', () => {
-    if (objekModeSelect.value === 'custom') {
-      objekCustomInput.style.display = 'block';
-    } else {
-      objekCustomInput.style.display = 'none';
-    }
+    objekCustomInput.style.display = objekModeSelect.value === 'custom' ? 'block' : 'none';
   });
 
-  // Sembunyikan font group jika teks kosong
-  teksStickerInput.addEventListener('input', () => {
-    if (teksStickerInput.value.trim() === '') {
-      fontGroup.style.display = 'none';
-    } else {
-      fontGroup.style.display = 'block';
-    }
-  });
-
-  // Fungsi acak array
-  function shuffle(array) {
-    const arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
+  // Generate dropdown
+  function createSelect(options, className, value = options[0]) {
+    const select = document.createElement('select');
+    select.className = className;
+    options.forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt;
+      option.textContent = opt;
+      if (opt === value) option.selected = true;
+      select.appendChild(option);
+    });
+    return select;
   }
 
-  // Ambil semua opsi pose & ekspresi
-  const semuaPose = Array.from(document.getElementById('pose').options).map(opt => opt.value);
-  const semuaEkspresi = Array.from(document.getElementById('ekspresi').options).map(opt => opt.value);
+  // Generate input dinamis
+  function generateInputs(jumlah) {
+    teksContainer.innerHTML = '';
+    poseContainer.innerHTML = '';
+    ekspresiContainer.innerHTML = '';
 
-  // Generate prompt teks (batch atau tunggal)
+    for (let i = 0; i < jumlah; i++) {
+      // Teks
+      const teksInput = document.createElement('input');
+      teksInput.type = 'text';
+      teksInput.className = 'teks-item';
+      teksInput.placeholder = `Teks untuk sticker ${i + 1}`;
+      teksContainer.appendChild(teksInput);
+
+      // Pose
+      poseContainer.appendChild(createSelect(POSE_OPTIONS, 'pose-item'));
+
+      // Ekspresi
+      ekspresiContainer.appendChild(createSelect(EKSPRESI_OPTIONS, 'ekspresi-item'));
+    }
+
+    // Kontrol tampil font group
+    const hasTeks = jumlah > 0;
+    fontGroup.style.display = hasTeks ? 'block' : 'none';
+  }
+
+  // Inisialisasi awal
+  generateInputs(1);
+
+  // Saat jumlah berubah
+  jumlahInput.addEventListener('input', () => {
+    let jumlah = parseInt(jumlahInput.value) || 1;
+    jumlah = Math.max(1, Math.min(10, jumlah));
+    jumlahInput.value = jumlah;
+    generateInputs(jumlah);
+  });
+
+  // Baca data input
+  function getStickerData() {
+    const teksItems = Array.from(document.querySelectorAll('.teks-item')).map(el => el.value.trim());
+    const poseItems = Array.from(document.querySelectorAll('.pose-item')).map(el => el.value);
+    const ekspresiItems = Array.from(document.querySelectorAll('.ekspresi-item')).map(el => el.value);
+    return { teksItems, poseItems, ekspresiItems };
+  }
+
+  // Generate prompt teks
   function generatePromptText() {
     const objekMode = objekModeSelect.value;
     const objekCustom = objekCustomInput.value.trim();
     const gayaSticker = document.getElementById('gaya-sticker').value;
     const latar = document.getElementById('latar-belakang').value.trim() || 'transparan';
-    const teks = teksStickerInput.value.trim();
     const gayaFont = document.getElementById('gaya-font').value;
-    const jumlah = parseInt(jumlahInput.value) || 1;
+    const { teksItems, poseItems, ekspresiItems } = getStickerData();
+    const jumlah = teksItems.length;
 
     let bagianObjek;
     if (objekMode === 'foto') {
@@ -64,45 +126,34 @@ document.addEventListener('DOMContentLoaded', () => {
       bagianObjek = objekCustom;
     }
 
-    // Jika hanya 1 sticker
     if (jumlah === 1) {
-      const pose = document.getElementById('pose').value;
-      const ekspresi = document.getElementById('ekspresi').value;
+      const teks = teksItems[0];
       let bagianTeks = '';
       if (teks) {
         bagianTeks = ` Sertakan teks: "${teks}" dengan gaya font ${gayaFont}.`;
       }
-      return `Buatkan ilustrasi digital sticker bergaya ${gayaSticker} dari ${bagianObjek}, dalam pose ${pose}, dengan ekspresi ${ekspresi}.${bagianTeks} Latar belakang: ${latar}. Desain harus bersih, mudah dikenali, dan optimal untuk digunakan sebagai sticker di aplikasi chat.`;
+      return `Buatkan ilustrasi digital sticker bergaya ${gayaSticker} dari ${bagianObjek}, dalam pose ${poseItems[0]}, dengan ekspresi ${ekspresiItems[0]}.${bagianTeks} Latar belakang: ${latar}. Desain harus bersih, mudah dikenali, dan optimal untuk digunakan sebagai sticker di aplikasi chat.`;
     }
-
-    // Jika lebih dari 1 → acak pose & ekspresi
-    const poseDipilih = shuffle(semuaPose).slice(0, jumlah);
-    const ekspresiDipilih = shuffle(semuaEkspresi).slice(0, jumlah);
 
     let daftar = '';
     for (let i = 0; i < jumlah; i++) {
-      const p = poseDipilih[i % poseDipilih.length];
-      const e = ekspresiDipilih[i % ekspresiDipilih.length];
-      daftar += `\n- Sticker ${i + 1}: pose ${p}, ekspresi ${e}`;
+      const teks = teksItems[i];
+      const teksPart = teks ? ` (teks: "${teks}")` : '';
+      daftar += `\n- Sticker ${i + 1}: pose ${poseItems[i]}, ekspresi ${ekspresiItems[i]}${teksPart}`;
     }
 
-    let bagianTeks = '';
-    if (teks) {
-      bagianTeks = ` Sertakan teks "${teks}" dengan gaya font ${gayaFont} di setiap sticker.`;
-    }
-
-    return `Buatkan ${jumlah} sticker dengan gaya ${gayaSticker} dari ${bagianObjek}.${bagianTeks} Latar belakang: ${latar}. Setiap sticker harus memiliki pose dan ekspresi berbeda:${daftar}\n\nDesain harus bersih, mudah dikenali, dan optimal untuk digunakan sebagai sticker di aplikasi chat.`;
+    return `Buatkan ${jumlah} sticker dengan gaya ${gayaSticker} dari ${bagianObjek}. Latar belakang: ${latar}. Setiap sticker memiliki pose, ekspresi, dan teks berbeda:${daftar}\n\nDesain harus bersih, mudah dikenali, dan optimal untuk digunakan sebagai sticker di aplikasi chat.`;
   }
 
-  // Generate JSON minimalis (hanya parameter inti)
+  // Generate JSON minimalis
   function generateJsonMinimal() {
     const objekMode = objekModeSelect.value;
     const objekCustom = objekCustomInput.value.trim();
     const gayaSticker = document.getElementById('gaya-sticker').value;
     const latar = document.getElementById('latar-belakang').value.trim() || 'transparan';
-    const teks = teksStickerInput.value.trim();
     const gayaFont = document.getElementById('gaya-font').value;
-    const jumlah = parseInt(jumlahInput.value) || 1;
+    const { teksItems, poseItems, ekspresiItems } = getStickerData();
+    const jumlah = teksItems.length;
 
     let bagianObjek;
     if (objekMode === 'foto') {
@@ -112,30 +163,34 @@ document.addEventListener('DOMContentLoaded', () => {
       bagianObjek = objekCustom;
     }
 
-    const json = {
+    if (jumlah === 1) {
+      return {
+        subject: bagianObjek,
+        pose: poseItems[0],
+        expression: ekspresiItems[0],
+        text: teksItems[0] || null,
+        font_style: teksItems[0] ? gayaFont : null,
+        sticker_style: gayaSticker,
+        background: latar
+      };
+    }
+
+    const stickers = [];
+    for (let i = 0; i < jumlah; i++) {
+      stickers.push({
+        pose: poseItems[i],
+        expression: ekspresiItems[i],
+        text: teksItems[i] || null
+      });
+    }
+
+    return {
       subject: bagianObjek,
       sticker_style: gayaSticker,
       background: latar,
-      text: teks || null,
-      font_style: teks ? gayaFont : null
+      font_style: teksItems.some(t => t) ? gayaFont : null,
+      stickers: stickers
     };
-
-    if (jumlah === 1) {
-      json.pose = document.getElementById('pose').value;
-      json.expression = document.getElementById('ekspresi').value;
-    } else {
-      const poseDipilih = shuffle(semuaPose).slice(0, jumlah);
-      const ekspresiDipilih = shuffle(semuaEkspresi).slice(0, jumlah);
-      json.variations = [];
-      for (let i = 0; i < jumlah; i++) {
-        json.variations.push({
-          pose: poseDipilih[i % poseDipilih.length],
-          expression: ekspresiDipilih[i % ekspresiDipilih.length]
-        });
-      }
-    }
-
-    return json;
   }
 
   // Tombol Create Prompt
@@ -162,20 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Belum ada hasil untuk disalin!');
       return;
     }
-
     hasilPrompt.select();
     hasilPrompt.setSelectionRange(0, 99999);
-
     try {
       const success = document.execCommand('copy');
       if (success) {
-        const originalText = copyBtn.textContent;
+        const original = copyBtn.textContent;
         copyBtn.textContent = 'Tersalin!';
-        setTimeout(() => {
-          copyBtn.textContent = originalText;
-        }, 1500);
+        setTimeout(() => copyBtn.textContent = original, 1500);
       }
-    } catch (err) {
+    } catch (e) {
       alert('Gagal menyalin.');
     }
   });
