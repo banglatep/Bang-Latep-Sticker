@@ -48,44 +48,34 @@
         <input type="text" id="objek-custom" placeholder="Contoh: pria Indonesia, kemeja putih, kacamata lensa" />
       </div>
 
-      <!-- Pose -->
+      <!-- Jumlah Sticker -->
       <div class="form-group">
-        <label for="pose">Pose</label>
-        <select id="pose">
-          <option value="Angkat Jempol (Thumbs Up)">😁 Angkat Jempol (Thumbs Up)</option>
-          <option value="Tangan di Dagu (Thinking Pose)">🤔 Tangan di Dagu (Thinking Pose)</option>
-          <option value="Namaste / Tangan Menyatu di Dada">🙏 Namaste / Tangan Menyatu di Dada</option>
-          <option value="Tangan Silang di Dada">😎 Tangan Silang di Dada</option>
-          <option value="Tertawa Sambil Pegang Perut">😂 Tertawa Sambil Pegang Perut</option>
-          <option value="Membentuk Hati dengan Jari (Finger Heart / Heart Hands)">🫶 Membentuk Hati dengan Jari</option>
-          <option value="Menunjuk ke Depan (Pointing Pose)">🗣️ Menunjuk ke Depan</option>
-          <option value="Tangan di Mulut (Kaget / OMG Pose)">🫢 Tangan di Mulut (Kaget / OMG Pose)</option>
-          <option value="Pamer Otot atau Pose Heroik">💪 Pamer Otot atau Pose Heroik</option>
-          <option value="Tangan Terbuka / Shrug Pose">🤷‍♂️ Tangan Terbuka / Shrug Pose</option>
-        </select>
+        <label for="jumlah-sticker">Jumlah Sticker (1–10)</label>
+        <input type="number" id="jumlah-sticker" min="1" max="10" value="1" />
       </div>
 
-      <!-- Ekspresi -->
+      <!-- Teks di Sticker (Dinamis) -->
       <div class="form-group">
-        <label for="ekspresi">Ekspresi</label>
-        <select id="ekspresi">
-          <option value="Tersenyum Lebar / Happy">😁 Tersenyum Lebar / Happy</option>
-          <option value="Tertawa Sampai Mata Merem / Ngakak">😂 Tertawa Sampai Mata Merem / Ngakak</option>
-          <option value="Mata Berbinar / Love Eyes">😍 Mata Berbinar / Love Eyes</option>
-          <option value="Marah / Cemberut / Ngamuk Lucu">😡 Marah / Cemberut / Ngamuk Lucu</option>
-          <option value="Sedih / Menangis Dramatik">😢 Sedih / Menangis Dramatik</option>
-          <option value="Senyum Nakal / Smirk">😏 Senyum Nakal / Smirk</option>
-          <option value="Kaget / Shock / Wah!">😮‍💨 Kaget / Shock / Wah!</option>
-          <option value="Datar / Bete / Deadpan">😐 Datar / Bete / Deadpan</option>
-          <option value="Mikir Serius / Mencurigai">🤔 Mikir Serius / Mencurigai</option>
-          <option value="Ekspresi Senang Berlebihan / Party Mood">🥳 Ekspresi Senang Berlebihan / Party Mood</option>
-        </select>
+        <label>Teks di Sticker</label>
+        <div id="teks-container">
+          <input type="text" class="teks-item" placeholder="Teks untuk sticker 1" />
+        </div>
       </div>
 
-      <!-- Teks di Sticker -->
+      <!-- Pose (Dinamis) -->
       <div class="form-group">
-        <label for="teks-sticker">Teks di Sticker (opsional)</label>
-        <input type="text" id="teks-sticker" placeholder="Contoh: SEMANGAT!!!" />
+        <label>Pose</label>
+        <div id="pose-container">
+          <!-- Dropdown pose akan di-generate di sini -->
+        </div>
+      </div>
+
+      <!-- Ekspresi (Dinamis) -->
+      <div class="form-group">
+        <label>Ekspresi</label>
+        <div id="ekspresi-container">
+          <!-- Dropdown ekspresi akan di-generate di sini -->
+        </div>
       </div>
 
       <!-- Gaya Font -->
@@ -125,12 +115,6 @@
       <div class="form-group">
         <label for="latar-belakang">Latar Belakang</label>
         <input type="text" id="latar-belakang" placeholder="Contoh: transparan, gradient biru, pola bintang" value="transparan" />
-      </div>
-
-      <!-- Jumlah Sticker -->
-      <div class="form-group">
-        <label for="jumlah-sticker">Jumlah Sticker (1–10)</label>
-        <input type="number" id="jumlah-sticker" min="1" max="10" value="1" />
       </div>
 
       <!-- Tombol Generate -->
