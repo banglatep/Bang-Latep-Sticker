@@ -1,4 +1,4 @@
-/* style.css - Latar Putih + Minimalis Modern Card Elevation */
+/* style.css - Final: Logo, Donasi, Footer & Card Elevation Jelas */
 * {
   margin: 0;
   padding: 0;
@@ -7,11 +7,22 @@
 }
 
 body {
-  background-color: #ffffff; /* Latar putih */
-  color: #102632; /* Teks utama: biru tua pekat */
+  background-color: #ffffff;
+  color: #102632;
   padding: 24px;
   min-height: 100vh;
   line-height: 1.5;
+  background-image: url('bg-mobile.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Background desktop */
+@media (min-width: 768px) {
+  body {
+    background-image: url('bg-desktop.jpg');
+  }
 }
 
 .container {
@@ -19,35 +30,51 @@ body {
   margin: 0 auto;
 }
 
+/* Header dengan Logo */
 header {
   text-align: center;
   margin-bottom: 36px;
 }
 
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
 header h1 {
   font-size: 2rem;
-  margin-bottom: 10px;
   color: #102632;
   font-weight: 700;
+  margin: 0;
 }
 
 header p {
-  color: #967e7c; /* Earth tone lembut untuk deskripsi */
+  color: #967e7c;
   font-size: 1.05rem;
 }
 
-/* Card styling */
+/* Card styling - diperjelas */
 .form-group {
-  background-color: #ebeaf5; /* Abu-abu keunguan sangat muda */
+  background-color: #ffffff; /* Putih murni agar shadow terlihat */
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(16, 38, 50, 0.1); /* Bayangan halus dengan warna dari #102632 */
+  box-shadow: 0 6px 20px rgba(16, 38, 50, 0.12);
   transition: box-shadow 0.3s ease;
+  border: 1px solid #f0f0f0;
 }
 
 .form-group:hover {
-  box-shadow: 0 6px 16px rgba(16, 38, 50, 0.15);
+  box-shadow: 0 8px 24px rgba(16, 38, 50, 0.15);
 }
 
 .form-group label {
@@ -127,6 +154,45 @@ button:active {
   background-color: #a89290;
 }
 
+/* Tombol Traktir Kopi */
+.donate-section {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.donate-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: #bc0e2b;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 4px 10px rgba(188, 14, 43, 0.2);
+}
+
+.donate-btn:hover {
+  background-color: #d41030;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(188, 14, 43, 0.25);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ebeaf5;
+  color: #967e7c;
+  font-size: 0.95rem;
+}
+
+footer strong {
+  color: #bc0e2b;
+}
+
 /* Kontrol tampil/sembunyi */
 #objek-custom,
 #font-group {
@@ -141,6 +207,10 @@ button:active {
 @media (max-width: 600px) {
   body {
     padding: 16px;
+  }
+
+  .logo-img {
+    height: 32px;
   }
 
   header h1 {
@@ -158,6 +228,11 @@ button:active {
 
   button {
     padding: 12px;
+    font-size: 1rem;
+  }
+
+  .donate-btn {
+    padding: 10px 20px;
     font-size: 1rem;
   }
 }
