@@ -1,4 +1,4 @@
-/* style.css - Final: Logo, Donasi, Footer, Card Elevation, & Dukungan JSON */
+/* style.css - Final: Logo, Donasi, Footer, Card Elevation, & Dual Mode (Prompt/JSON) */
 * {
   margin: 0;
   padding: 0;
@@ -112,67 +112,58 @@ header p {
   opacity: 0.8;
 }
 
-/* Tombol utama (Generate) */
-button {
+/* Tombol Create Prompt & Create JSON */
+.generate-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.generate-buttons button {
+  flex: 1;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#create-prompt-btn {
+  background-color: #bc0e2b;
+  color: white;
+}
+
+#create-prompt-btn:hover {
+  background-color: #d41030;
+}
+
+#create-json-btn {
+  background-color: #102632;
+  color: white;
+}
+
+#create-json-btn:hover {
+  background-color: #1a3a4d;
+}
+
+/* Tombol Salin (hanya satu, teks berubah dinamis) */
+.copy-btn-primary {
   width: 100%;
   padding: 14px;
-  background-color: #bc0e2b;
+  background-color: #967e7c;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-button:hover {
-  background-color: #d41030;
-}
-
-button:active {
-  transform: translateY(1px);
-}
-
-/* Area Hasil */
-.result-section {
-  position: relative;
-}
-
-/* Tombol Salin Ganda */
-.copy-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.copy-buttons button {
-  flex: 1;
-  padding: 10px;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
   transition: background-color 0.2s;
 }
 
-#copy-btn {
-  background-color: #967e7c;
-  color: white;
-}
-
-#copy-btn:hover {
+.copy-btn-primary:hover {
   background-color: #a89290;
-}
-
-#copy-json-btn {
-  background-color: #102632;
-  color: white;
-}
-
-#copy-json-btn:hover {
-  background-color: #1a3a4d;
 }
 
 /* Tombol Traktir Kopi */
@@ -247,14 +238,13 @@ footer strong {
     font-size: 1rem;
   }
 
-  button {
-    padding: 12px;
-    font-size: 1rem;
-  }
-
-  .copy-buttons {
+  .generate-buttons {
     flex-direction: column;
     gap: 8px;
+  }
+
+  .generate-buttons button {
+    width: 100%;
   }
 
   .donate-btn {
