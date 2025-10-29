@@ -128,16 +128,16 @@
       </div>
 
       <!-- Tombol Generate -->
-      <button id="generate-btn">Buatkan Prompt Sekarang</button>
+      <div class="generate-buttons">
+        <button id="create-prompt-btn">Create Prompt</button>
+        <button id="create-json-btn">Create JSON</button>
+      </div>
 
       <!-- Hasil Prompt -->
       <div class="form-group result-section">
         <label>Hasilkan Prompt</label>
         <textarea id="hasil-prompt" rows="6" readonly placeholder="Prompt akan muncul di sini..."></textarea>
-        <div class="copy-buttons">
-          <button id="copy-btn">Salin Prompt</button>
-          <button id="copy-json-btn">Salin sebagai JSON</button>
-        </div>
+        <button id="copy-btn" class="copy-btn-primary">SALIN PROMPT</button>
       </div>
     </main>
 
@@ -157,3 +157,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
