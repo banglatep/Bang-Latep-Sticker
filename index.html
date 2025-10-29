@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sticker Prompt Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎨 Sticker Prompt Generator</h1>
+      <p>Buat prompt untuk sticker di Gemini / ChatGPT</p>
+    </header>
+
+    <main>
+      <!-- Objek -->
+      <div class="form-group">
+        <label for="objek-mode">Objek</label>
+        <select id="objek-mode">
+          <option value="foto">Wajah terlampir (gunakan foto)</option>
+          <option value="custom">Input sendiri</option>
+        </select>
+        <input type="text" id="objek-custom" placeholder="Contoh: pria Indonesia, kemeja putih, kacamata lensa" />
+      </div>
+
+      <!-- Pose -->
+      <div class="form-group">
+        <label for="pose">Pose</label>
+        <select id="pose">
+          <option value="Angkat Jempol (Thumbs Up)">😁 Angkat Jempol (Thumbs Up)</option>
+          <option value="Tangan di Dagu (Thinking Pose)">🤔 Tangan di Dagu (Thinking Pose)</option>
+          <option value="Namaste / Tangan Menyatu di Dada">🙏 Namaste / Tangan Menyatu di Dada</option>
+          <option value="Tangan Silang di Dada">😎 Tangan Silang di Dada</option>
+          <option value="Tertawa Sambil Pegang Perut">😂 Tertawa Sambil Pegang Perut</option>
+          <option value="Membentuk Hati dengan Jari (Finger Heart / Heart Hands)">🫶 Membentuk Hati dengan Jari</option>
+          <option value="Menunjuk ke Depan (Pointing Pose)">🗣️ Menunjuk ke Depan</option>
+          <option value="Tangan di Mulut (Kaget / OMG Pose)">🫢 Tangan di Mulut (Kaget / OMG Pose)</option>
+          <option value="Pamer Otot atau Pose Heroik">💪 Pamer Otot atau Pose Heroik</option>
+          <option value="Tangan Terbuka / Shrug Pose">🤷‍♂️ Tangan Terbuka / Shrug Pose</option>
+        </select>
+      </div>
+
+      <!-- Ekspresi -->
+      <div class="form-group">
+        <label for="ekspresi">Ekspresi</label>
+        <select id="ekspresi">
+          <option value="Tersenyum Lebar / Happy">😁 Tersenyum Lebar / Happy</option>
+          <option value="Tertawa Sampai Mata Merem / Ngakak">😂 Tertawa Sampai Mata Merem / Ngakak</option>
+          <option value="Mata Berbinar / Love Eyes">😍 Mata Berbinar / Love Eyes</option>
+          <option value="Marah / Cemberut / Ngamuk Lucu">😡 Marah / Cemberut / Ngamuk Lucu</option>
+          <option value="Sedih / Menangis Dramatik">😢 Sedih / Menangis Dramatik</option>
+          <option value="Senyum Nakal / Smirk">😏 Senyum Nakal / Smirk</option>
+          <option value="Kaget / Shock / Wah!">😮‍💨 Kaget / Shock / Wah!</option>
+          <option value="Datar / Bete / Deadpan">😐 Datar / Bete / Deadpan</option>
+          <option value="Mikir Serius / Mencurigai">🤔 Mikir Serius / Mencurigai</option>
+          <option value="Ekspresi Senang Berlebihan / Party Mood">🥳 Ekspresi Senang Berlebihan / Party Mood</option>
+        </select>
+      </div>
+
+      <!-- Teks di Sticker -->
+      <div class="form-group">
+        <label for="teks-sticker">Teks di Sticker (opsional)</label>
+        <input type="text" id="teks-sticker" placeholder="Contoh: SEMANGAT!!!" />
+      </div>
+
+      <!-- Gaya Font -->
+      <div class="form-group" id="font-group">
+        <label for="gaya-font">Gaya Font</label>
+        <select id="gaya-font">
+          <option value="Bold Comic Style">Bold Comic Style</option>
+          <option value="Bubble Font (Huruf Balon)">Bubble Font (Huruf Balon)</option>
+          <option value="Handwritten Casual">Handwritten Casual</option>
+          <option value="Graffiti Style">Graffiti Style</option>
+          <option value="Rounded Sans Bold">Rounded Sans Bold</option>
+          <option value="Chalk / Marker Font">Chalk / Marker Font</option>
+          <option value="Cartoon 3D Text">Cartoon 3D Text</option>
+          <option value="Outline Font (Huruf Berbatas)">Outline Font (Huruf Berbatas)</option>
+          <option value="Sticker Cutout Font">Sticker Cutout Font</option>
+          <option value="Playful Script Font">Playful Script Font</option>
+        </select>
+      </div>
+
+      <!-- Gaya Sticker -->
+      <div class="form-group">
+        <label for="gaya-sticker">Gaya Sticker</label>
+        <select id="gaya-sticker">
+          <option value="Kartun">Kartun</option>
+          <option value="Chibi">Chibi</option>
+          <option value="3D Pixar">3D Pixar</option>
+          <option value="Krayon">Krayon</option>
+          <option value="Cat Air">Cat Air</option>
+          <option value="Sketsa">Sketsa</option>
+          <option value="Retro">Retro</option>
+          <option value="Realistis">Realistis</option>
+          <option value="Minimalis">Minimalis</option>
+        </select>
+      </div>
+
+      <!-- Latar Belakang -->
+      <div class="form-group">
+        <label for="latar-belakang">Latar Belakang</label>
+        <input type="text" id="latar-belakang" placeholder="Contoh: transparan, gradient biru, pola bintang" value="transparan" />
+      </div>
+
+      <!-- Tombol Generate -->
+      <button id="generate-btn">Buatkan Prompt Sekarang</button>
+
+      <!-- Hasil Prompt -->
+      <div class="form-group result-section">
+        <label>Hasilkan Prompt</label>
+        <textarea id="hasil-prompt" rows="6" readonly placeholder="Prompt akan muncul di sini..."></textarea>
+        <button id="copy-btn">Salin ke Clipboard</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
